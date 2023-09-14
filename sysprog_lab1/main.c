@@ -17,8 +17,8 @@ int main(void) {
     int current_buffer_position = 0;
     FILE *file;
     DynamicCStringArray *arr = init_dynamic_array(10);
+    
     file = fopen("tests/repeated.txt", "r");
-
     if (file == NULL) {
         perror("File opening failed");
         return -1;
@@ -59,11 +59,23 @@ int main(void) {
             return -1;
         }
     }
-    printf("Max:\n");
-    printf("%d\n", max_length);
-    for (int i = 0; i < arr->size; i++) {
-        printf("%s\n", arr->array[i]);
+
+    FILE *output_file;
+
+    output_file = fopen("output.txt", "w");
+    if (output_file == NULL) {
+        perror("Output file opening failed");
+        return -1;
     }
+    
+    fputs("Max:\n", output_file);
+    fprintf(output_file, "%d\n", max_length);
+    for (int i = 0; i < arr->size; i++) {
+        fputs(arr->array[i], output_file);
+        fputs("\n", output_file);
+    }
+    
     free_dynamic_array(arr);
     fclose(file);
+    fclose(output_file);
 }
