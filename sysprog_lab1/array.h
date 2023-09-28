@@ -1,16 +1,15 @@
-#include <stdio.h>
-
+#include <wchar.h>
 
 typedef struct {
-    const char **array;    // Pointer to the underlying dynamic array
-    int size;   // Current number of elements in the array
-    int capacity; // Capacity of the array (maximum elements it can hold)
-} DynamicCStringArray;
+    wchar_t **array;
+    int size;
+    int capacity;
+} DynamicWStringArray;
 
-DynamicCStringArray *init_dynamic_array(int initial_capacity);
+DynamicWStringArray *init_dynamic_array(int initial_capacity);
 
-void append(DynamicCStringArray *arr, const char *element);
+void append(DynamicWStringArray *arr, const wchar_t *element);
 
-void free_dynamic_array(DynamicCStringArray *arr);
+void free_dynamic_array(DynamicWStringArray *arr);
 
-void clear(DynamicCStringArray *arr);
+void clear(DynamicWStringArray *arr);
