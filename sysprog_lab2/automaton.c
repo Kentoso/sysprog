@@ -172,23 +172,6 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
 }
 
 bool intersect_automata(const Automaton *automaton1, const Automaton *automaton2, Automaton *result) {
-    if (automaton1->numAlphabet != automaton2->numAlphabet) {
-        return false;
-    }
-
-    for (int i = 0; i < automaton1->numAlphabet; i++) {
-        bool found = false;
-        for (int j = 0; j < automaton2->numAlphabet; j++) {
-            if (automaton1->alphabet[i] == automaton2->alphabet[j]) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            return false;
-        }
-    }
-
     result->numAlphabet = automaton1->numAlphabet;
     for (int i = 0; i < result->numAlphabet; i++) {
         result->alphabet[i] = automaton1->alphabet[i];
