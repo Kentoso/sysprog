@@ -1,0 +1,21 @@
+3 // Number of characters in alphabet
+
+a b c // Characters in the alphabet
+
+3 // Number of states in alphabet
+
+0 1 2 // States of the automaton
+
+0 // Initial state is state 0
+
+2 // Number of final states
+0 2 // Final states are 0 and 2
+
+6 // Number of transitions
+
+0 a 1 // Transition: from state 0 to state 1 when reading 'a'
+0 b 0 // Transition: from state 0 to state 0 when reading 'b'
+1 a 1 // Transition: from state 1 to state 1 when reading 'a'
+1 b 2 // Transition: from state 1 to state 2 when reading 'b'
+2 a 1 // Transition: from state 2 to state 1 when reading 'a'
+2 b 0 // Transition: from state 2 to state 0 when reading 'b'
