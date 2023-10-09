@@ -1,7 +1,9 @@
+// #include <cstdint>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <limits.h>
 #include "automaton.h"
 
 bool automaton_init(FILE *file, Automaton *automaton) {
@@ -124,6 +126,7 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
     }
 
     result[0] = '\0';
+    bool wasResultTouched = false;
 
     bool visited[MAX_STATES];
     for (int i = 0; i < automaton->numStates; i++) {
@@ -145,13 +148,6 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
     while (front < rear) {
         int currentState = queue[front];
         
-        for (int i = 0; i < automaton->numFinalStates; i++) {
-            if (currentState == automaton->finalStates[i]) {
-                strcpy(result, paths[currentState]);
-                return true;
-            }
-        }
-
         for (int i = 0; i < automaton->numTransitions; i++) {
             if (automaton->transitions[i].fromState == currentState && !visited[automaton->transitions[i].toState]) {
                 if (strlen(paths[currentState]) + 1 < maxLength) {
@@ -167,8 +163,23 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
 
         front++;
     }
+    int min_word_length = INT_MAX;
+    for (int i = 0; i < automaton->numFinalStates; i++) {
+        int length = strlen(paths[automaton->finalStates[i]]);
+        if (length > 0) {
+            min_word_length = length < min_word_length ? length : min_word_length;
+        }
+    }
 
-    return false;
+    for (int i = 0; i < automaton->numFinalStates; i++) {
+        int length = strlen(paths[automaton->finalStates[i]]);
+        if (length == min_word_length) {
+            strcat(result, paths[automaton->finalStates[i]]);
+            strcat(result, ", ");
+        }
+    }
+
+    return true;
 }
 
 bool intersect_automata(const Automaton *automaton1, const Automaton *automaton2, Automaton *result) {
@@ -191,13 +202,13 @@ bool intersect_automata(const Automaton *automaton1, const Automaton *automaton2
 
     result->initialState = stateMap[automaton1->initialState][automaton2->initialState];
 
-    for (int i = 0; i < automaton1->numStates; i++) {
-        for (int j = 0; j < automaton2->numStates; j++) {
+    for (int i = 0; i < automaton1->numTransitions; i++) {
+        for (int j = 0; j < automaton2->numTransitions; j++) {
             if (automaton1->transitions[i].inputSymbol != automaton2->transitions[j].inputSymbol) {
                 continue;
             }
 
-            int newState1 = stateMap[i][j];
+            int newState1 = stateMap[automaton1->transitions[i].fromState][automaton2->transitions[j].fromState];
             int newState2 = stateMap[automaton1->transitions[i].toState][automaton2->transitions[j].toState];
 
             result->transitions[result->numTransitions].fromState = newState1;

@@ -23,9 +23,9 @@ void automaton_demostration(const char *automaton_path) {
         return;
     }
 
-    const char *testString1 = "ab";
-    const char *testString2 = "abab";
-    const char *testString3 = "aa";
+    const char *testString1 = "a";
+    const char *testString2 = "abb";
+    const char *testString3 = "ab";
 
     test_automaton(&automaton, testString1);
     test_automaton(&automaton, testString2);
@@ -77,40 +77,37 @@ void automata_intersect_demonstration(const char *automaton1_path, const char *a
 
     Automaton result;
     printf("• Intersecting\n");
-    if (intersect_automata(&automaton1, &automaton2, &result)) {
-        printf("• Intersection automaton created successfully\n");
-        print_automaton_info(&result);
-        test_automaton(&result, "");
-        test_automaton(&result, "ab");
-        test_automaton(&result, "abc");
+     printf("• Intersection automaton created successfully\n");
+    print_automaton_info(&result);
+    // test_automaton(&result, "");
+    // test_automaton(&result, "ab");
+    // test_automaton(&result, "abc");
 
-        char min_word[MAX_WORD_LENGTH];
-        bool was_shortest_found = find_shortest_recognizable_word(&result, min_word, MAX_WORD_LENGTH);
+    char min_word[MAX_WORD_LENGTH];
+    bool was_shortest_found = find_shortest_recognizable_word(&result, min_word, MAX_WORD_LENGTH);
 
-        if (was_shortest_found) {
-            printf("Shortest word: %s\n", min_word);
-        }
-        else {
-            printf("Unable to find shortest word\n");
-        }
-
-
-        FILE *output = fopen("./output.txt", "w");
-        if (output == NULL) {
-            perror("Error opening the file for output");
-            return;
-        }
-        write_automaton_to_file(output, &result);
-        fclose(output);
-
-    } 
-    else {
-        printf("Automata cannot be intersected due to incompatible alphabets\n");
+    if (was_shortest_found) {
+        printf("Shortest words: %s\n", min_word);
     }
+    else {
+        printf("Unable to find shortest word\n");
+    }
+
+    FILE *output = fopen("./output.txt", "w");
+    if (output == NULL) {
+        perror("Error opening the file for output");
+        return;
+    }
+    write_automaton_to_file(output, &result);
+    fclose(output);
 }
 
 int main() {
+    // automaton_demostration("./automata/(ab)plusMOD.txt");
+    automaton_demostration("./automata/(ab)astMOD.txt");
     // automaton_demostration("./automata/(ab)plus.txt");
-    automata_intersect_demonstration("./automata/(ab)plus.txt", "./automata/(ab)asterisk.txt");
+    // automaton_demostration("./automata/(ab)asterisk.txt");
+    // automata_intersect_demonstration("./automata/(ab)plus.txt", "./automata/(ab)asterisk.txt");
+    // automata_intersect_demonstration("./automata/(ab)plus.txt", "./automata/aasterisk.txt");
     return 0;
 }
