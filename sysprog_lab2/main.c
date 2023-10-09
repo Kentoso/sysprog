@@ -35,7 +35,7 @@ void automaton_demostration(const char *automaton_path) {
     bool was_shortest_found = find_shortest_recognizable_word(&automaton, min_word, MAX_WORD_LENGTH);
 
     if (was_shortest_found) {
-        printf("Shortest word: %s\n", min_word);
+        printf("Shortest words: %s\n", min_word);
     }
     else {
         printf("Unable to find shortest word\n");
@@ -103,8 +103,8 @@ void automata_intersect_demonstration(const char *automaton1_path, const char *a
 }
 
 int main() {
-    // automaton_demostration("./automata/(ab)plusMOD.txt");
-    automaton_demostration("./automata/(ab)astMOD.txt");
+    automaton_demostration("./automata/(ab)plusMOD.txt");
+    // automaton_demostration("./automata/(ab)astMOD.txt");
     // automaton_demostration("./automata/(ab)plus.txt");
     // automaton_demostration("./automata/(ab)asterisk.txt");
     // automata_intersect_demonstration("./automata/(ab)plus.txt", "./automata/(ab)asterisk.txt");

@@ -147,7 +147,7 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
 
     while (front < rear) {
         int currentState = queue[front];
-        
+
         for (int i = 0; i < automaton->numTransitions; i++) {
             if (automaton->transitions[i].fromState == currentState && !visited[automaton->transitions[i].toState]) {
                 if (strlen(paths[currentState]) + 1 < maxLength) {
@@ -174,12 +174,17 @@ bool find_shortest_recognizable_word(const Automaton *automaton, char *result, i
     for (int i = 0; i < automaton->numFinalStates; i++) {
         int length = strlen(paths[automaton->finalStates[i]]);
         if (length == min_word_length) {
+            wasResultTouched = true;
             strcat(result, paths[automaton->finalStates[i]]);
             strcat(result, ", ");
         }
     }
 
-    return true;
+    if (strlen(result) > 0) {
+        result[strlen(result) - 2] = '\0';
+    }
+
+    return wasResultTouched;
 }
 
 bool intersect_automata(const Automaton *automaton1, const Automaton *automaton2, Automaton *result) {
