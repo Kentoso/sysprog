@@ -57,49 +57,6 @@ expression
     ;
 %%
 
-int append_newline_if_needed(FILE *file) {
-    if (fseek(file, 0, SEEK_END) != 0) {
-        printf("Error seeking to end of file.\n");
-        return -1;
-    }
-
-    long file_size = ftell(file);
-    if (file_size == 0) {
-        printf("File is empty, no newline needed.\n");
-        return 0;
-    }
-
-    int is_last_line_whitespace_only = 1;
-    for (long i = file_size - 1; i >= 0; --i) {
-        if (fseek(file, i, SEEK_SET) != 0) {
-            printf("Error seeking in file.\n");
-            return -1;
-        }
-
-        int c = fgetc(file);
-        if (c == '\n') {
-            printf("Newline found, no additional newline needed.\n");
-            break;
-        } else if (!isspace(c)) {
-            printf("Non-whitespace character found, appending newline.\n");
-            is_last_line_whitespace_only = 0;
-            break;
-        }
-    }
-
-    if (is_last_line_whitespace_only) {
-        if (fputc('\n', file) == EOF) {
-            printf("Error writing newline to file.\n");
-            return -1;
-        }
-        fflush(file);
-        printf("Newline appended to file.\n");
-    }
-
-    rewind(file);
-    return 0;
-}
-
 int main(int argc, char **argv)
 {
     calc_data.is_reading_from_file = argc > 1;
@@ -110,8 +67,6 @@ int main(int argc, char **argv)
             return 1;
         }
     }
-
-    /* append_newline_if_needed(yyin); */
 
     do {
         yyparse();
