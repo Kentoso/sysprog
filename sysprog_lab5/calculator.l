@@ -1,4 +1,3 @@
-/* recognize tokens for the calculator and print them out */
 %{
     #include "calculator.tab.h"
     #include "calculator.h"
@@ -20,5 +19,4 @@
 [ \t]   { /* whitespace */ }
 "//".*  { /* comment */ }
 .       { printf("Unknown character (line %d): %c\n", calc_data.current_line, *yytext); }
-
 %%
